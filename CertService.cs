@@ -26,6 +26,17 @@ public class CertService
         string keyVaultName = Environment.GetEnvironmentVariable("KEY_VAULT_NAME");
         var kvUri = "https://" + keyVaultName + ".vault.azure.net";
 
+        var clientOptions = new CertificateClientOptions()
+        {
+            Retry =
+                    {
+                        Delay = TimeSpan.FromSeconds(2),
+                        MaxDelay = TimeSpan.FromSeconds(16),
+                        MaxRetries = 5,
+                        Mode = Azure.Core.RetryMode.Exponential
+                    }
+        };
+
         var client = new CertificateClient(new Uri(kvUri), new DefaultAzureCredential());
 
         Certificate = await client.GetCertificateAsync(certificateName);
