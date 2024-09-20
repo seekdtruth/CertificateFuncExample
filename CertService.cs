@@ -11,15 +11,10 @@ public class CertService
     {
         Console.WriteLine("CertService instantiated");
 
-        var initCertTask = Task.Factory.StartNew(async () =>
-        {
-            await InitCert();
-        });
-
-        initCertTask.Wait();
+        InitCert();
     }
 
-    public async Task InitCert()
+    public void InitCert()
     {
         string certificateName = "RootCert5611";
 
@@ -39,7 +34,7 @@ public class CertService
 
         var client = new CertificateClient(new Uri(kvUri), new DefaultAzureCredential());
 
-        Certificate = await client.GetCertificateAsync(certificateName);
+        Certificate = client.GetCertificate(certificateName);
     }
 
     public string ShowCertProps()
