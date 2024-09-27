@@ -1,6 +1,7 @@
 ﻿using Azure.Identity;
 using Azure.Security.KeyVault.Certificates;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 public class CertService
@@ -32,7 +33,7 @@ public class CertService
                     }
         };
 
-        var client = new CertificateClient(new Uri(kvUri), new DefaultAzureCredential());
+        var client = new CertificateClient(new Uri(kvUri), new DefaultAzureCredential(), clientOptions);
 
         Certificate = client.GetCertificate(certificateName);
     }
@@ -40,5 +41,13 @@ public class CertService
     public string ShowCertProps()
     {
         return $"Your certificate version is '{Certificate.Value.Properties.Version}'";
+    }
+
+    public X509Certificate2 GetCertificate()
+    {
+        var value = Certificate.Value;
+        var cer = value.Cer;
+        var cert = new X509Certificate2(cer);
+        return cert;
     }
 }
