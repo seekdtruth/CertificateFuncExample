@@ -23,6 +23,8 @@ namespace CertificateFunc
 
             _logger.LogInformation(_certService.ShowCertProps());
 
+            _logger.LogInformation($"Your certificate version is '{_certService.GetCertificate().Version}'");
+
             return new OkObjectResult(_certService.ShowCertProps());
         }
     }
