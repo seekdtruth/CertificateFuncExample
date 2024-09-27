@@ -2,7 +2,6 @@
 using Azure.Security.KeyVault.Certificates;
 using System;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 
 public class CertService
 {
@@ -36,6 +35,13 @@ public class CertService
         var client = new CertificateClient(new Uri(kvUri), new DefaultAzureCredential(), clientOptions);
 
         Certificate = client.GetCertificate(certificateName);
+
+        var response = Certificate.GetRawResponse();
+
+        if (response.IsError)
+        {
+            Console.WriteLine($"Certificate Response Code:{response.Status} Reason:{response.ReasonPhrase}");
+        }
     }
 
     public string ShowCertProps()
